@@ -15,7 +15,6 @@ int main()
 {
   clock_t begin = clock();
   srand(time(NULL));
-  int a;
   printf("%.2f\n", hillclimbing());
   clock_t end = clock();
   printf("%.7f\n", (double)((end - begin) / (double)CLOCKS_PER_SEC));
@@ -106,7 +105,7 @@ void increase(int* myPath)
 double hillclimbing()
 {
   int pathbestgain[6], auxpath[6], a, random = 10000;
-  double bestgain, previous;
+  double bestgain;
   for(a = 0; a < 6; a++)
   {
     pathbestgain[a] = rand()%360;
@@ -121,7 +120,6 @@ double hillclimbing()
       for(a = 0; a < 6; a++) auxpath[a] = rand()%360;
     }
     if(rand()%2) random--;
-    previous = bestgain;
     recursionGenerate(auxpath, pathbestgain, 0, 0);
     for(a = 0; a < 6; a++) auxpath[a] = pathbestgain[a];
     bestgain = finalgain;
@@ -135,7 +133,6 @@ double hillclimbing()
       for(a = 0; a < 6; a++) auxpath[a] = rand()%360;
     }
     if(rand()%2) random--;
-    previous = bestgain;
     recursionGenerate(auxpath, pathbestgain, 2, 0);
     for(a = 0; a < 6; a++) auxpath[a] = pathbestgain[a];
     bestgain = finalgain;
@@ -150,7 +147,6 @@ double hillclimbing()
       for(a = 0; a < 6; a++) auxpath[a] = rand()%360;
     }
     if(rand()%2) random--;
-    previous = bestgain;
     recursionGenerate(auxpath, pathbestgain, 5, 0);
     for(a = 0; a < 6; a++) auxpath[a] = pathbestgain[a];
     bestgain = finalgain;
