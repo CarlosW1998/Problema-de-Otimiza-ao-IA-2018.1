@@ -3,7 +3,6 @@
 #include<stdlib.h>
 #include<time.h>
 #define Euler 2.7182818284590452353
-#define debug 1
 double finalgain;
 //Passa os 3 angulos, devolve o ganho
 double gain(int phi1, int theta1, int phi2, int theta2, int phi3, int theta3);
