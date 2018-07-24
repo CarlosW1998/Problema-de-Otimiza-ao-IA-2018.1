@@ -18,7 +18,7 @@ int main()
   int a;
   printf("%.2f\n", hillclimbing());
   clock_t end = clock();
-  printf("%.7f\n", (double)((end - begin) / CLOCKS_PER_SEC));
+  printf("%.7f\n", (double)((end - begin) / (double)CLOCKS_PER_SEC));
   return 0;
 
 }
@@ -59,15 +59,49 @@ void recursionGenerate(int* modifyPath, int* finalPath, int a, int k)
     }
     return;
   }
-  modifyPath[a] += 1;
+  modifyPath[a] = (modifyPath[a] + 1 < 360)? modifyPath[a]+1 : 0;
   recursionGenerate(modifyPath, finalPath, a+1, k+1);
-  modifyPath[a] -=1;
+  modifyPath[a] = (modifyPath[a] - 1 >= 0)? modifyPath[a]-1 : 359;
   recursionGenerate(modifyPath, finalPath, a+1, k+1);
-  modifyPath[a] -=1;
+  modifyPath[a] = (modifyPath[a] - 1 >= 0)? modifyPath[a]-1 : 359;
   recursionGenerate(modifyPath, finalPath, a+1, k+1);
-  modifyPath[a] += 1;
+  modifyPath[a] = (modifyPath[a] + 1 < 360)? modifyPath[a]+1 : 0;
 }
-
+void increase(int* myPath)
+{
+  int a, b, c, d, e, f;
+  double currentGain;
+  int aux = 5;
+  for(a = myPath[0]-aux; a < myPath[0]+aux; a++)
+  {
+    for(b = myPath[1] -aux; b < myPath[1] +aux; b++)
+    {
+      for(c = myPath[2] -aux; c < myPath[2] + aux; c++)
+      {
+        for(d = myPath[3] - aux; d < myPath[3] + aux; d++)
+        {
+          for(e = myPath[4] - aux; e < myPath[4] + aux; e++)
+          {
+            for(f = myPath[5] - aux; f < myPath[5] + aux; f++)
+            {
+              currentGain = gain(a, b, c, d, e, f);
+              if(currentGain > finalgain)
+              {
+                finalgain = currentGain;
+                myPath[0] = a;
+                myPath[1] = b;
+                myPath[2] = c;
+                myPath[3] = d;
+                myPath[4] = e;
+                myPath[5] = f;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 double hillclimbing()
 {
@@ -82,7 +116,7 @@ double hillclimbing()
   finalgain = bestgain;
   while(random > 0)
   {
-    if(rand()%10000 < random)
+    if(rand()%1000 < random)
     {
       for(a = 0; a < 6; a++) auxpath[a] = rand()%360;
     }
@@ -96,7 +130,7 @@ double hillclimbing()
 
   while(random > 0)
   {
-    if(rand()%10000 < random)
+    if(rand()%1000 < random)
     {
       for(a = 0; a < 6; a++) auxpath[a] = rand()%360;
     }
@@ -111,7 +145,7 @@ double hillclimbing()
 
   while(random > 0)
   {
-    if(rand()%10000 < random)
+    if(rand()%1000 < random)
     {
       for(a = 0; a < 6; a++) auxpath[a] = rand()%360;
     }
@@ -121,6 +155,9 @@ double hillclimbing()
     for(a = 0; a < 6; a++) auxpath[a] = pathbestgain[a];
     bestgain = finalgain;
   }
+  finalgain = bestgain;
+  increase(pathbestgain);
+  bestgain = finalgain;
 
   for(a = 0; a < 3; a++)printf("%d %d\n", pathbestgain[a*2], pathbestgain[a*2+1]);
   return bestgain;

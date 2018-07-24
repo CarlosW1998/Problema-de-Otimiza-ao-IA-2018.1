@@ -18,7 +18,7 @@ int main()
   int a;
   printf("%.2f\n", hillclimbing());
   clock_t end = clock();
-  printf("%.2f\n", (double)((end - begin) / CLOCKS_PER_SEC));
+  printf("%.2f\n", (double)(end - begin) / (double)CLOCKS_PER_SEC);
   return 0;
 
 }
@@ -59,13 +59,13 @@ void recursionGenerate(int* modifyPath, int* finalPath, int a)
     }
     return;
   }
-  modifyPath[a] += 1;
+  modifyPath[a] = (modifyPath[a] + 1 < 360)? modifyPath[a]+1 : 0;
   recursionGenerate(modifyPath, finalPath, a+1);
-  modifyPath[a] -=1;
+  modifyPath[a] = (modifyPath[a] - 1 >= 0)? modifyPath[a]-1 : 359;
   recursionGenerate(modifyPath, finalPath, a+1);
-  modifyPath[a] -=1;
+  modifyPath[a] = (modifyPath[a] - 1 >= 0)? modifyPath[a]-1 : 359;
   recursionGenerate(modifyPath, finalPath, a+1);
-  modifyPath[a] += 1;
+  modifyPath[a] = (modifyPath[a] + 1 < 360)? modifyPath[a]+1 : 0;
 }
 
 
