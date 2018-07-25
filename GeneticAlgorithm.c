@@ -77,22 +77,19 @@ void genereteDescendentes(int** pop, double* cust)
   {
     if(rand()%5 == 0)
     {
-      desc2[a] = pop[0][a];
-      desc1[a] = pop[1][a];
+      desc1[a] = pop[0][a];
+      desc2[a] = pop[1][a];
     }
     else
     {
-      desc1 = pop[0][a];
-      desc2 = pop[1][a];
+      desc1[a] = pop[1][a];
+      desc2[a] = pop[0][a];
     }
   }
-  auxdesc1 = gain(desc1[0], desc1[1], desc1[2], desc1[3], desc1[4], desc1[5]);
-  printf("%.2f - ", auxdesc1);
-  for(a = 0; a < 6; a++)printf("%d ", desc1[a]);
-  printf("\n");
-  auxdesc2 = gain(desc2[0], desc2[1], desc2[2], desc2[3], desc2[4], desc2[5]);
-
-
+  for(a = 0; a < 6; a++)
+  {
+    printf("%d %d\n", desc1[a], desc2[a]);
+  }
 }
 double genericAlgorithm()
 {
@@ -114,6 +111,6 @@ double genericAlgorithm()
   }
   genereteDescendentes(popupation, cust);
 
-
+  return -1;
 
 }
