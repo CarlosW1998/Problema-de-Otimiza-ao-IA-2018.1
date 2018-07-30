@@ -77,11 +77,11 @@ int* cross(int* path1, int* path2)
   if(rand()%200 == 0) desc[rand()%6] = rand()%360;
   return desc;
 }
-int* genereteDescendentes(int** pop, double* cust)
+int* genereteDescendentes(int** pop, double* cust, int size)
 {
-  int a, b = 999, c = 0;
+  int a, b = size, c = 0;
   int* aux;
-  for(a = 0; a < 50; a++)
+  for(a = 0; a < 300; a++)
   {
     aux = cross(pop[a], pop[a+1]);
     pop[b] = aux;
@@ -95,22 +95,23 @@ int* genereteDescendentes(int** pop, double* cust)
 }
 void genericAlgorithm()
 {
-  int** population = (int**)malloc(sizeof(int*)*1000);
-  double* cust = (double*)malloc(sizeof(double)*1000);
+  int size = 1000;
+  int** population = (int**)malloc(sizeof(int*)*size);
+  double* cust = (double*)malloc(sizeof(double)*size);
   int a, b, loop = 1000;
-  for(a = 0; a < 1000; a++)
+  for(a = 0; a < size; a++)
   {
     population[a] = (int*)malloc(sizeof(int)*6);
     for(b = 0; b < 6; b++)population[a][b] = rand()%360;
     cust[a] = gain(population[a][0], population[a][1], population[a][2], population[a][3], population[a][4], population[a][5]);
   }
-  sort(population, cust, 1000);
+  sort(population, cust, size);
   //for(a = 0; a < 1000; a++) printf("%.2f; ", cust[a]);
   while(loop != 0)
   {
     //printf("%.2f; ", cust[0]);
-    genereteDescendentes(population, cust);
-    sort(population, cust, 1000);
+    genereteDescendentes(population, cust, size-1);
+    sort(population, cust, size);
     loop--;
   }
   printf("%.2f : ", cust[0]);
