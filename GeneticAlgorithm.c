@@ -6,7 +6,7 @@
 
 
 //Encontra o melhor resultado
-double genericAlgorithm();
+void genericAlgorithm();
 
 int main()
 {
@@ -17,9 +17,7 @@ int main()
   int a;
   genericAlgorithm();
   clock_t end = clock();
-
-
-  //printf("%.2f\n", (double)(end - begin) / (double)CLOCKS_PER_SEC);
+  printf("%.2f\n", (double)(end - begin) / (double)CLOCKS_PER_SEC);
   return 0;
 
 }
@@ -67,50 +65,55 @@ void sort(int** pop, double* cust, int size)
     }
   }
 }
-void genereteDescendentes(int** pop, double* cust)
+int* cross(int* path1, int* path2)
 {
-  int* desc1 = (int*)malloc(sizeof(int)*6);
-  int* desc2 = (int*)malloc(sizeof(int)*6);
   int a;
-  double auxdesc1, auxdesc2;
+  int* desc = (int*)malloc(sizeof(int)*6);
   for(a = 0; a < 6; a++)
   {
-    if(rand()%5 == 0)
-    {
-      desc1[a] = pop[0][a];
-      desc2[a] = pop[1][a];
-    }
-    else
-    {
-      desc1[a] = pop[1][a];
-      desc2[a] = pop[0][a];
-    }
+    if(rand()%6 == 0) desc[a] = path2[a];
+    else desc[a] = path1[a];
   }
-  for(a = 0; a < 6; a++)
+  if(rand()%200 == 0) desc[rand()%6] = rand()%360;
+  return desc;
+}
+int* genereteDescendentes(int** pop, double* cust)
+{
+  int a, b = 999, c = 0;
+  int* aux;
+  for(a = 0; a < 50; a++)
   {
-    printf("%d %d\n", desc1[a], desc2[a]);
+    aux = cross(pop[a], pop[a+1]);
+    pop[b] = aux;
+    cust[b] = gain(aux[0], aux[1], aux[2], aux[3], aux[4], aux[5]);
+    b--;
+    aux = cross(pop[a+1], pop[a]);
+    pop[b] = aux;
+    cust[b] = gain(aux[0], aux[1], aux[2], aux[3], aux[4], aux[5]);
+    b--;
   }
 }
-double genericAlgorithm()
+void genericAlgorithm()
 {
-  int a, b;
-  int** popupation = (int**)malloc(sizeof(int*)*10), auxpop[6];
-  double cust[10], auxcust;
-  for(a = 0; a < 10; a++)
+  int** population = (int**)malloc(sizeof(int*)*1000);
+  double* cust = (double*)malloc(sizeof(double)*1000);
+  int a, b, loop = 1000;
+  for(a = 0; a < 1000; a++)
   {
-    popupation[a] = (int*)malloc(sizeof(int)*6);
-    for(b = 0; b <6; b++) popupation[a][b] = rand()%360;
-    cust[a] = gain(popupation[a][0], popupation[a][1], popupation[a][2], popupation[a][3], popupation[a][4], popupation[a][5]);
+    population[a] = (int*)malloc(sizeof(int)*6);
+    for(b = 0; b < 6; b++)population[a][b] = rand()%360;
+    cust[a] = gain(population[a][0], population[a][1], population[a][2], population[a][3], population[a][4], population[a][5]);
   }
-  sort(popupation, cust, 10);
-  for(a = 0; a < 10; a++)
+  sort(population, cust, 1000);
+  //for(a = 0; a < 1000; a++) printf("%.2f; ", cust[a]);
+  while(loop != 0)
   {
-    printf("%.2f - ", cust[a]);
-    for(b = 0; b <6; b++) printf("%d  ", popupation[a][b]);
-    printf("\n");
+    //printf("%.2f; ", cust[0]);
+    genereteDescendentes(population, cust);
+    sort(population, cust, 1000);
+    loop--;
   }
-  genereteDescendentes(popupation, cust);
-
-  return -1;
-
+  printf("%.2f : ", cust[0]);
+  for(a = 0; a < 6; a++)printf("%d ", population[0][a]);
+  printf("\n");
 }
