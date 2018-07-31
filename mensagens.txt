@@ -1,1 +1,0 @@
-http://localhost:8080/antenna/simulate?phi1=90&theta1=90&phi2=90&theta2=90&phi3=90&theta3=90
