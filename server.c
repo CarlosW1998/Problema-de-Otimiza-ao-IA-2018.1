@@ -17,7 +17,8 @@ int main()
 
   srand(time(NULL));
   int a;
-  gain(90, 90, 90, 90, 90, 90);
+
+  printf("%.2f\n", gain(90, 90, 90, 90, 90, 90));
   clock_t end = clock();
   printf("%.2f\n", (double)(end - begin) / (double)CLOCKS_PER_SEC);
   return 0;
@@ -40,9 +41,13 @@ int main()
 // }
 double gain(int phi1, int theta1, int phi2, int theta2, int phi3, int theta3)
 {
-    char *message[1024];
+    const char *message[1024];
+    double result = 2.0;
     sprintf(message,"curl http://localhost:8080/antenna/simulate?phi1=%d\\&theta1=%d\\&phi2=%d\\&theta2=%d\\&phi3=%d\\&theta3=%d > temp.txt",phi1,theta1,phi2,theta2,phi3,theta3);
-    //printf("%s\n", message);
     system(message);
+    FILE* arch = (FILE*)fopen("temp.txt", "r");
+    fscanf(arch, "%s", message);
+    sscanf(message, "%lf", &result);
+    return result;
 
 }
