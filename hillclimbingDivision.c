@@ -28,15 +28,20 @@ double norm(double x)
 
 double gain(int phi1, int theta1, int phi2, int theta2, int phi3, int theta3)
 {
-  const char *message[1024];
-  double result = 2.0;
-  sprintf(message,"curl -s http://localhost:8080/antenna/simulate?phi1=%d\\&theta1=%d\\&phi2=%d\\&theta2=%d\\&phi3=%d\\&theta3=%d > temp.txt",phi1,theta1,phi2,theta2,phi3,theta3);
-  system(message);
-  FILE* arch = (FILE*)fopen("temp.txt", "r");
-  fscanf(arch, "%s", message);
-  sscanf(message, "%lf", &result);
-  fclose(arch);
-  return result;
+  double x = norm((double)phi1);
+  double y = norm((double)theta1);
+  double gain1 = sin(x) + cos(y);
+
+  x = norm((double)phi2);
+  y = norm((double)theta2);
+  double gain2 = y*sin(x) - x*cos(y);
+
+  x = norm((double)phi3);
+  y = norm((double)theta3);
+  double r = sqrt(x * x + y * y);
+  double gain3 = sin(x * x + 3.0 * y * y) / (0.1 + r * r) + (x * x + 5 * y * y) * pow(Euler, (1.0 - r * r)) / 2.0;
+
+  return 4.0 * gain1 + gain2 + 4.0 *gain3;
 }
 
 void recursionGenerate(int* modifyPath, int* finalPath, int a, int k)

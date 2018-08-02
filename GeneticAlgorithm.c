@@ -106,12 +106,10 @@ void genericAlgorithm()
     cust[a] = gain(population[a][0], population[a][1], population[a][2], population[a][3], population[a][4], population[a][5]);
   }
   sort(population, cust, size);
-  //for(a = 0; a < 1000; a++) printf("%.2f; ", cust[a]);
   while(loop != 0)
   {
-    //printf("%.2f; ", cust[0]);
     genereteDescendentes(population, cust, size-1);
-    sort(population, cust, size);
+    sort(population, cust,   size-1);
     loop--;
   }
   printf("%.2f : ", cust[0]);
